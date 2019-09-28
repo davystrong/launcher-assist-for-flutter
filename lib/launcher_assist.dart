@@ -7,8 +7,9 @@ class LauncherAssist {
 
   /// Returns a list of apps installed on the user's device
   static Future<List<Map<String, dynamic>>> getAllApps() async {
-    List<Map<String, dynamic>> data = await _channel.invokeMethod<List<Map<String, dynamic>>>('getAllApps');
-    return data;
+    List<dynamic> data = await _channel.invokeMethod<List<dynamic>>('getAllApps');
+    return data.cast<Map<dynamic, dynamic>>().map((data) => data.cast<String, dynamic>())
+         .toList();
   }
 
   /// Launches an app using its package name
