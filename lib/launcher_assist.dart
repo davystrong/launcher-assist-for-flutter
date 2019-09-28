@@ -1,23 +1,25 @@
 import 'package:flutter/services.dart';
+import 'dart:async';
+import 'dart:typed_data';
 
 class LauncherAssist {
   static const MethodChannel _channel = const MethodChannel('launcher_assist');
 
   /// Returns a list of apps installed on the user's device
-  static getAllApps() async {
-    var data = await _channel.invokeMethod('getAllApps');
+  static Future<List<Map<String, dynamic>>> getAllApps() async {
+    List<Map<String, dynamic>> data = await _channel.invokeMethod<List<Map<String, dynamic>>>('getAllApps');
     return data;
   }
 
   /// Launches an app using its package name
-  static launchApp(String packageName) {
+  static void launchApp(String packageName) {
     _channel.invokeMethod("launchApp", {"packageName": packageName});
   }
 
   /// Gets you the current wallpaper on the user's device. This method
   /// needs the READ_EXTERNAL_STORAGE permission on Android Oreo.
-  static getWallpaper() async {
-    var data = await _channel.invokeMethod('getWallpaper');
+  static Future<Uint8List> getWallpaper() async {
+    Uint8List data = await _channel.invokeMethod<Uint8List>('getWallpaper');
     return data;
   }
 }
