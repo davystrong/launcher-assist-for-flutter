@@ -31,9 +31,9 @@ class LauncherAssist {
   }
 }
 
-/// A representation of the app info for better autocomplete
+/// A representation of the app info
 class AppInfo {
-  /// Complete package name
+  /// Complete package name (ie: com.example.app)
   final String package;
 
   /// User readable app name
