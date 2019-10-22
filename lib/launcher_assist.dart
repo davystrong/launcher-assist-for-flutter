@@ -10,12 +10,12 @@ class LauncherAssist {
     List<dynamic> data =
         await _channel.invokeMethod<List<dynamic>>('getAllApps');
     List<Map<String, dynamic>> allApps = data
-        .cast<Map<String, dynamic>>()
+        .cast<Map<dynamic, dynamic>>()
         .map((data) => data.cast<String, dynamic>())
         .toList();
 
     return allApps
-        .map<AppInfo>((Map<String, dynamic> data) => AppInfo.fromMap(data));
+        .map<AppInfo>((Map<String, dynamic> data) => AppInfo.fromMap(data)).toList();
   }
 
   /// Launches an app using its package name
