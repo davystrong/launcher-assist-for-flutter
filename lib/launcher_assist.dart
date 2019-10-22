@@ -6,10 +6,16 @@ class LauncherAssist {
   static const MethodChannel _channel = const MethodChannel('launcher_assist');
 
   /// Returns a list of apps installed on the user's device
-  static Future<List<Map<String, dynamic>>> getAllApps() async {
-    List<dynamic> data = await _channel.invokeMethod<List<dynamic>>('getAllApps');
-    return data.cast<Map<dynamic, dynamic>>().map((data) => data.cast<String, dynamic>())
-         .toList();
+  static Future<List<AppInfo>> getAllApps() async {
+    List<dynamic> data =
+        await _channel.invokeMethod<List<dynamic>>('getAllApps');
+    List<Map<String, dynamic>> allApps = data
+        .cast<Map<String, dynamic>>()
+        .map((data) => data.cast<String, dynamic>())
+        .toList();
+
+    return allApps
+        .map<AppInfo>((Map<String, dynamic> data) => AppInfo.fromMap(data));
   }
 
   /// Launches an app using its package name
@@ -23,4 +29,21 @@ class LauncherAssist {
     Uint8List data = await _channel.invokeMethod<Uint8List>('getWallpaper');
     return data;
   }
+}
+
+/// A representation of the app info for better autocomplete
+class AppInfo {
+  /// Complete package name
+  final String package;
+
+  /// User readable app name
+  final String label;
+
+  /// App icon
+  final Uint8List icon;
+
+  AppInfo.fromMap(Map<String, dynamic> data)
+      : package = data['package'],
+        label = data['label'],
+        icon = data['icon'];
 }
